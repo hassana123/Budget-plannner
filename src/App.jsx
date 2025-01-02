@@ -17,6 +17,7 @@ const PrivateRoute = ({ children }) => {
   
   return user ? children : <Navigate to="/login" />;
 };
+localStorage.clear("")
 function App() {
   return (
     <Router>

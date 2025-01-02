@@ -50,11 +50,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (email, password) => {
-   /// console.log(auth.uid);
-
+    signInWithEmailAndPassword(auth, email, password); 
     localStorage.setItem("userId", auth.currentUser.uid);
-
-    return signInWithEmailAndPassword(auth, email, password);
   };
 
   const logout = () => {
