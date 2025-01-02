@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (email, password) => {
-    console.log(auth.uid);
+   /// console.log(auth.uid);
 
     localStorage.setItem("userId", auth.currentUser.uid);
 
