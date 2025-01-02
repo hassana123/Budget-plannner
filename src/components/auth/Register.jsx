@@ -31,7 +31,7 @@ const Register = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen lg:flex lg:items-center justify-center bg-gray-50 dark:bg-gray-900 px-2 my-20">
+      <div className="min-h-screen lg:flex  justify-center bg-gray-50 dark:bg-gray-900 px-2 my-20">
         <div className="max-w-md w-full space-y-8">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
