@@ -24,14 +24,14 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen px-3 my-20 lg:flex  justify-center  bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen px-3 my-20  md:flex  justify-center  bg-gray-50 dark:bg-gray-900">
         <div className="">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
               Sign in to Trackly
             </h2>
           </div>
-          <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
+          <form className="mt-8 space-y-6 " onSubmit={handleSubmit}>
             <div className="rounded-md shadow-sm space-y-5">
               <div>
                 <input
