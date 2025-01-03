@@ -26,7 +26,8 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
   const moneyIn = totals.income;
   const saving = totals.savings;
   const moneyOut = totals.expenses + totals.bills + totals.debt;
-  const balance = moneyIn - moneyOut;
+  const balanceWithSavings = moneyIn - moneyOut - saving;
+  const balanceWithoutSavings = moneyIn - moneyOut;
 
   const chartData = {
     labels: ['Income', 'Expenses', 'Bills', 'Savings', 'Debt'],
@@ -61,7 +62,7 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
         className="w-full flex items-center justify-between"
       >
         <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-          {userName ? `${userName}'s Summary` : 'Financial Summary'}
+          {userName ? `${userName}'s Summary` : 'Financial Shenanigans'}
         </h2>
         <FiChevronDown 
           className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
@@ -77,7 +78,7 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
         <div className="space-y-4">
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-green-600 dark:text-green-400">Total Money In <br/> <small>(Total Income Earned In January)</small></span>
+              <span className="text-green-600 dark:text-green-400">Total Money In <br/> <small>(Earnings in January)</small></span>
               <span className="font-semibold text-green-700 dark:text-green-300">
                 {formatNaira(moneyIn)}
               </span>
@@ -86,7 +87,7 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
 
           <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-blue-600 dark:text-blue-400">Total Savings  <br/> <small>(Total Money Saved In January)</small></span>
+              <span className="text-blue-600 dark:text-blue-400">Total Savings  <br/> <small>(Money Locked 🔐 Away)</small></span>
               <span className="font-semibold text-blue-700 dark:text-blue-300">
                 {formatNaira(saving)}
               </span>
@@ -95,7 +96,7 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
 
           <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-red-600 dark:text-red-400">Total Money Out <br/> <small>(Total Money Spent In January)</small></span>
+              <span className="text-red-600 dark:text-red-400">Total Money Out <br/> <small>(Where It All Went)</small></span>
               <span className="font-semibold text-red-700 dark:text-red-300">
                 {formatNaira(moneyOut)}  
               </span>
@@ -105,12 +106,24 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
             </div>
           </div>
 
-          <div className="p-4 bg-gradient-to-r from-primary to-primary-light dark:from-primary-dark dark:to-primary rounded-lg">
-            <div className="flex justify-between items-center">
-            <span className="text-white font-medium">What's left of January:</span>
-<span className="text-white font-semibold">
-  {formatNaira(balance)}<small className='my-5'> (Barely holding on!)</small>
-</span>
+          <div className="p-3 text-[12px] bg-black  dark:from-primary-dark dark:to-primary rounded-lg">
+            <div className="flex flex-col space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-white font-medium">January Flex Funds: <br/>(Protected savings 🔐 )</span>
+               <div className='w-10 h-[2px] bg-white'></div>
+                <span className="text-white font-semibold">
+
+                  {formatNaira(balanceWithSavings)}<br/> <small>(Savings Hero Mode)</small>
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-white font-medium">January Flex Funds<br/> (savings at risk 🔓)</span>
+               <div className='w-10 h-[2px] bg-white'></div>
+
+                <span className="text-white font-semibold">
+                  {formatNaira(balanceWithoutSavings)} <br/> <small>(YOLO Edition)</small>
+                </span>
+              </div>
             </div>
           </div>
         </div>

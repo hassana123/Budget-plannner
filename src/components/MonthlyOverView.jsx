@@ -18,7 +18,8 @@ const MonthlyOverview = ({ monthlyData }) => {
 
   const totalOutgoing = totalExpenses + totalBills + totalDebt;
   const isInDangerZone = totalOutgoing >= totalIncome;
-
+  const remainingWithoutSavings = totalIncome - totalOutgoing - totalSavings;
+  const remainingWithSavings = totalIncome  - totalOutgoing;
   const [isMessageVisible, setIsMessageVisible] = useState(false);
 
   const getStatusMessage = () => {
@@ -168,9 +169,16 @@ const MonthlyOverview = ({ monthlyData }) => {
                 : "text-emerald-700 dark:text-emerald-300"
             }`}
           >
-            {formatNaira(totalIncome - totalOutgoing)}
+            </p>
+            <p className="text-[16px] mt-2 text-green-900"> 
+            Balance: (Securing Your Savings 🔐) 
+            {formatNaira(remainingWithoutSavings)}
           </p>
-
+          <p className="text-[16px] mt-2 text-red-600">
+            Balance: (Unlocking Your Savings 🔓) 
+            {formatNaira(remainingWithSavings)}
+          </p>
+         
           {isMessageVisible && (
             <div className="absolute w-full top-full left-1/2 transform -translate-x-1/2 mt-2 bg-pink-800 text-white text-[15px] capitalize p-2 rounded-lg shadow-lg opacity-90">
               {getStatusMessage()}
