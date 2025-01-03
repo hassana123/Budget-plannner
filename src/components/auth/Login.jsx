@@ -24,7 +24,7 @@ const Login = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen px-3 my-20 justify-center bg-gray-50 dark:bg-gray-900">
+      <div className="min-h-screen px-3 my-20 lg:flex  justify-center  bg-gray-50 dark:bg-gray-900">
         <div className="">
           <div>
             <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
