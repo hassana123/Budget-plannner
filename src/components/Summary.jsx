@@ -107,10 +107,10 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
 
           <div className="p-4 bg-gradient-to-r from-primary to-primary-light dark:from-primary-dark dark:to-primary rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-white font-medium">Current Balance</span>
-              <span className="text-white font-semibold">
-                {formatNaira(balance)}
-              </span>
+            <span className="text-white font-medium">What's left of January:</span>
+<span className="text-white font-semibold">
+  {formatNaira(balance)}<small className='my-5'> (Barely holding on!)</small>
+</span>
             </div>
           </div>
         </div>

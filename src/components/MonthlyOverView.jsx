@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { formatNaira } from "../utils/currency";
 import { getCurrentMonth } from "../utils/dateHelpers";
-import { FiTrendingUp, FiTrendingDown, FiAlertTriangle } from "react-icons/fi";
+import { FiTrendingUp, FiTrendingDown, FiAlertTriangle, FiSave } from "react-icons/fi";
 
 const MonthlyOverview = ({ monthlyData }) => {
   const { month, year } = getCurrentMonth();
@@ -22,32 +22,47 @@ const MonthlyOverview = ({ monthlyData }) => {
   const [isMessageVisible, setIsMessageVisible] = useState(false);
 
   const getStatusMessage = () => {
-    if (totalIncome === 0 && totalOutgoing === 0) {
-      return `No financial data recorded yet, but don't worry, we're all broke sometimes. \n #BrokeButHappy #ChillNoMoney #NaijaVibes #DrySeason`;
-    }
-
-    if (totalOutgoing > totalIncome && totalSavings >= totalOutgoing) {
-      return `Your savings are covering your expenses, but your income is still lacking. \n #SavingsOnTop #PennySavedIsAPennyEarned #NaijaHustle #SavingsLife`;
-    }
-
-    if (totalOutgoing >= totalIncome && totalSavings === 0) {
-      return "Your expenses are eating up your income and you have no savings. \n #SurvivalMode #ChasingBalance #SapaChronicles #HustleForLife";
-    }
-
-    if (totalIncome < totalExpenses && totalSavings === 0) {
-      return `Your income can't cover your expenses and you have no savings. \n #FightingToSurvive #BalanceWeDeyFind #DebtLife #StrugglingHard`;
-    }
-
-    if (totalSavings > totalIncome && totalIncome > totalExpenses) {
-      return `Your savings are greater than your income, and you're still breezing through your expenses. \n #FinancialGuru #MoneyMatters #HustlerVibes #JapaPlans`;
-    }
-
-    if (totalOutgoing >= totalIncome) {
-      return `Warning: You're spending more than you're earning! \n #SapaOnTheHorizon #BudgetWahala #BrokeLife #SavingGraceNeeded`;
-    }
-
-    return "Your finances are looking great! Keep the good vibes going. \n #GoodVibesOnly #OnTheUpAndUp #MoneyGoals #FlexMode";
+    const message = (() => {
+      if (totalIncome === 0 && totalOutgoing === 0) {
+        return `No financial data recorded yet, but don't worry, we're all broke sometimes. \n #BrokeButHappy #ChillNoMoney #NaijaVibes #DrySeason`;
+      }
+  
+      if (totalOutgoing > totalIncome && totalSavings >= totalOutgoing) {
+        return `Your savings are covering your expenses, but your income is still lacking. \n #SavingsOnTop #PennySavedIsAPennyEarned #NaijaHustle #SavingsLife`;
+      }
+  
+      if (totalOutgoing >= totalIncome && totalSavings === 0) {
+        return "Your expenses are eating up your income and you have no savings. \n #SurvivalMode #ChasingBalance #SapaChronicles #HustleForLife";
+      }
+  
+      if (totalIncome < totalExpenses && totalSavings === 0) {
+        return `Your income can't cover your expenses and you have no savings. \n \n #FightingToSurvive #BalanceWeDeyFind #DebtLife #StrugglingHard`;
+      }1
+  
+      if (totalSavings > totalIncome && totalIncome > totalExpenses) {
+        return `Your savings are greater than your income, and you're still breezing through your expenses. \n #FinancialGuru #MoneyMatters #HustlerVibes #JapaPlans`;
+      }
+  
+      if (totalOutgoing >= totalIncome) {
+        return `Warning: You're spending more than you're earning! \n #SapaOnTheHorizon #BudgetWahala #BrokeLife #SavingGraceNeeded`;
+      }
+  
+      return "Your finances are looking great! Keep the good vibes going. \n #GoodVibesOnly #OnTheUpAndUp #MoneyGoals #FlexMode";
+    })();
+  
+    // Split message into normal text and hashtags
+    return message.split(/(\s#\w+)/).map((part, index) => {
+      if (part.startsWith(" #")) {
+        return (
+          <span key={index} className="text-[11px] text white ">
+            {part}
+          </span>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
   };
+  
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-soft py-5 px-2 mb-8">
@@ -55,21 +70,46 @@ const MonthlyOverview = ({ monthlyData }) => {
         {month} {year} Overview
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-4 lg:gap-6">
         <div
           className="p-2 rounded-lg bg-green-50 dark:bg-green-900/20 group relative"
-          title="Total of your income and savings"
+          title="Total of your income"
         >
           <div className="flex items-center justify-between">
-            <span className="text-green-600 dark:text-green-400">Money In</span>
+            <span className="text-green-600 dark:text-green-400">Income</span>
             <FiTrendingUp className="text-green-500" />
           </div>
           <p className="text-2xl font-bold text-green-700 dark:text-green-300 mt-2">
-            {formatNaira(totalIncome + totalSavings)}
+            {formatNaira(totalIncome)}
           </p>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 mt-2 text-sm text-green-600 dark:text-green-400">
-            Income: {formatNaira(totalIncome)} | Savings:{" "}
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity text-green-600 dark:text-green-400 duration-200 mt-2 text-sm ">
+          {monthlyData?.income? <> {monthlyData?.income?.map((item) => (
+                <div key={item.id}>
+                  {item.description} - {formatNaira(item.amount)}
+                </div>
+              ))}</> : <small>Zero</small>}
+         
+          </div>
+        </div>
+
+        <div
+          className="p-2 rounded-lg bg-blue-50 dark:bg-blue-900/20 group relative"
+          title="Total savings made this month"
+        >
+          <div className="flex items-center justify-between">
+            <span className="text-blue-600 dark:text-blue-400">Savings</span>
+            <FiSave className="text-blue-500" />
+          </div>
+          <p className="text-2xl font-bold text-blue-700 dark:text-blue-300 mt-2">
             {formatNaira(totalSavings)}
+          </p>
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 mt-2 text-sm text-blue-600 dark:text-blue-400">
+          {monthlyData?.savings? <>  {monthlyData?.savings?.map((item) => (
+                <div key={item.id}>
+                  {item.description} - {formatNaira(item.amount)}
+                </div>
+              ))}</>: <small>Zero</small>}
+        
           </div>
         </div>
 
@@ -131,15 +171,8 @@ const MonthlyOverview = ({ monthlyData }) => {
             {formatNaira(totalIncome - totalOutgoing)}
           </p>
 
-          {/* Toast message styled here */}
           {isMessageVisible && (
-            <div
-              className="absolute top-full  w-full my-1 left-1/2 transform -translate-x-1/2  -translate-y-2 dark:bg-white dark:text-black bg-pink-800 text-white text-md capitalize p-2 rounded-lg shadow-lg opacity-90"
-              style={{
-                // Adjust top position based on card height
-                top: 'calc(100% + 10px)', 
-              }}
-            >
+            <div className="absolute w-full top-full left-1/2 transform -translate-x-1/2 mt-2 bg-pink-800 text-white text-[15px] capitalize p-2 rounded-lg shadow-lg opacity-90">
               {getStatusMessage()}
             </div>
           )}
