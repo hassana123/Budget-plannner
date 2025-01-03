@@ -134,7 +134,7 @@ const MonthlyOverview = ({ monthlyData }) => {
           {/* Toast message styled here */}
           {isMessageVisible && (
             <div
-              className="absolute top-full  my-1 left-1/2 transform -translate-x-1/2  -translate-y-2 dark:bg-white dark:text-black bg-pink-800 text-white text-md capitalize p-2 rounded-lg shadow-lg opacity-90"
+              className="absolute top-full  w-full my-1 left-1/2 transform -translate-x-1/2  -translate-y-2 dark:bg-white dark:text-black bg-pink-800 text-white text-md capitalize p-2 rounded-lg shadow-lg opacity-90"
               style={{
                 // Adjust top position based on card height
                 top: 'calc(100% + 10px)', 

@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { formatNaira } from '../utils/currency';
@@ -9,18 +9,20 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const Summary = ({ income, expenses, bills, savings, debt }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const userName = localStorage.getItem("userName");
-const [totals, setTotals] = useState({})
- useEffect(()=>{
-  const calculateTotal = items => items.reduce((sum, item) => sum + item.amount, 0);
-  const total = {
-    income: calculateTotal(income),
-    expenses: calculateTotal(expenses),
-    bills: calculateTotal(bills),
-    savings: calculateTotal(savings),
-    debt: calculateTotal(debt)
-  };
-  setTotals(total)
- },[income, expenses, bills, savings, debt]);
+  const [totals, setTotals] = useState({});
+
+  useEffect(() => {
+    const calculateTotal = items => items.reduce((sum, item) => sum + item.amount, 0);
+    const total = {
+      income: calculateTotal(income),
+      expenses: calculateTotal(expenses),
+      bills: calculateTotal(bills),
+      savings: calculateTotal(savings),
+      debt: calculateTotal(debt),
+    };
+    setTotals(total);
+  }, [income, expenses, bills, savings, debt]);
+
   const moneyIn = totals.income;
   const saving = totals.savings;
   const moneyOut = totals.expenses + totals.bills + totals.debt;
@@ -28,17 +30,13 @@ const [totals, setTotals] = useState({})
 
   const chartData = {
     labels: ['Income', 'Expenses', 'Bills', 'Savings', 'Debt'],
-    datasets: [{
-      data: [totals.income, totals.expenses, totals.bills, totals.savings, totals.debt],
-      backgroundColor: [
-        '#FF6BA9',
-        '#FF89B9',
-        '#FFB4D1',
-        '#FFD4E5',
-        '#FF4D99'
-      ],
-      borderWidth: 0,
-    }]
+    datasets: [
+      {
+        data: [totals.income, totals.expenses, totals.bills, totals.savings, totals.debt],
+        backgroundColor: ['#FF6BA9', '#FF89B9', '#FFB4D1', '#FFD4E5', '#FF4D99'],
+        borderWidth: 0,
+      },
+    ],
   };
 
   const chartOptions = {
@@ -55,10 +53,7 @@ const [totals, setTotals] = useState({})
     },
     cutout: '70%',
   };
-  useEffect(() => {
-    // Trigger re-render when income, expenses, bills, savings, or debt data changes
-  }, [income, expenses, bills, savings, debt]); // dependencies ensure re-render when data changes
-  
+
   return (
     <div className="card p-5 mx-2">
       <button 
@@ -82,25 +77,31 @@ const [totals, setTotals] = useState({})
         <div className="space-y-4">
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-green-600 dark:text-green-400">Total Money In</span>
+              <span className="text-green-600 dark:text-green-400">Total Money In <br/> <small>(Total Income Earned In January)</small></span>
               <span className="font-semibold text-green-700 dark:text-green-300">
                 {formatNaira(moneyIn)}
               </span>
             </div>
-            <div className="mt-2 text-sm text-green-600 dark:text-green-400">
-              Income: {formatNaira(totals.income)} | Savings: {formatNaira(totals.savings)}
+          </div>
+
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+            <div className="flex justify-between items-center">
+              <span className="text-blue-600 dark:text-blue-400">Total Savings  <br/> <small>(Total Money Saved In January)</small></span>
+              <span className="font-semibold text-blue-700 dark:text-blue-300">
+                {formatNaira(saving)}
+              </span>
             </div>
           </div>
 
           <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-red-600 dark:text-red-400">Total Money Out</span>
+              <span className="text-red-600 dark:text-red-400">Total Money Out <br/> <small>(Total Money Spent In January)</small></span>
               <span className="font-semibold text-red-700 dark:text-red-300">
-                {formatNaira(moneyOut)}
+                {formatNaira(moneyOut)}  
               </span>
             </div>
             <div className="mt-2 text-sm text-red-600 dark:text-red-400">
-              Expenses: {formatNaira(totals.expenses)} | Bills: {formatNaira(totals.bills)} | Debt: {formatNaira(totals.debt)}
+              Custom Expenses: {formatNaira(totals.expenses)} | Bills: {formatNaira(totals.bills)} | Debt: {formatNaira(totals.debt)}
             </div>
           </div>
 
@@ -120,4 +121,5 @@ const [totals, setTotals] = useState({})
     </div>
   );
 };
+
 export default Summary;
