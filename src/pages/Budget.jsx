@@ -7,7 +7,7 @@ import { getCurrentMonth } from '../utils/dateHelpers';
 
 const Budget = () => {
   const [showMonthPicker, setShowMonthPicker] = useState(true);
-  const { monthlyData, loading, selectedMonth, setSelectedMonth } = useMonthlyData();
+  const { monthlyData, setMonthlyData, loading, selectedMonth, setSelectedMonth } = useMonthlyData();
 
   const handleMonthSelect = (month) => {
     setSelectedMonth(month);
@@ -19,7 +19,7 @@ const Budget = () => {
   }
 
   return (
-    <div className="container mx-auto px-6 py-8 mt-16">
+    <div className="container mx-auto my-5 ">
       {showMonthPicker ? (
         <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl max-w-lg w-full mx-4">
@@ -41,7 +41,7 @@ const Budget = () => {
             </h1>
             <button
               onClick={() => setShowMonthPicker(true)}
-              className="btn-secondary"
+              className="btn-secondary dark:text-white"
             >
               Change Month
             </button>
@@ -56,8 +56,9 @@ const Budget = () => {
           />
           
           <BudgetCards
-            monthlyData={monthlyData}
+            initialMonthlyData={monthlyData}
             isCurrentMonth={selectedMonth === getCurrentMonth().month}
+            setMonthlyData={setMonthlyData}
           />
         </>
       )}

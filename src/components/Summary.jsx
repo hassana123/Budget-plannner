@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Doughnut } from 'react-chartjs-2';
 import { formatNaira } from '../utils/currency';
@@ -9,18 +9,20 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 const Summary = ({ income, expenses, bills, savings, debt }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const userName = localStorage.getItem("userName");
-
+const [totals, setTotals] = useState({})
+ useEffect(()=>{
   const calculateTotal = items => items.reduce((sum, item) => sum + item.amount, 0);
-
-  const totals = {
+  const total = {
     income: calculateTotal(income),
     expenses: calculateTotal(expenses),
     bills: calculateTotal(bills),
     savings: calculateTotal(savings),
     debt: calculateTotal(debt)
   };
-  
-  const moneyIn = totals.income + totals.savings;
+  setTotals(total)
+ },[income, expenses, bills, savings, debt]);
+  const moneyIn = totals.income;
+  const saving = totals.savings;
   const moneyOut = totals.expenses + totals.bills + totals.debt;
   const balance = moneyIn - moneyOut;
 
@@ -53,7 +55,10 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
     },
     cutout: '70%',
   };
-
+  useEffect(() => {
+    // Trigger re-render when income, expenses, bills, savings, or debt data changes
+  }, [income, expenses, bills, savings, debt]); // dependencies ensure re-render when data changes
+  
   return (
     <div className="card p-5 mx-2">
       <button 

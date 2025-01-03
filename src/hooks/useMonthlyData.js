@@ -29,6 +29,7 @@ export const useMonthlyData = () => {
 
   return {
     monthlyData,
+    setMonthlyData,
     loading,
     selectedMonth,
     setSelectedMonth
