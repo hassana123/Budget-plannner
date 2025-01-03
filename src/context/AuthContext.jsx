@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 import { auth } from "../../FirebaseConfig";
 import { db } from "../../FirebaseConfig"; // Ensure Firestore is configured
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 const AuthContext = createContext();
 
@@ -49,9 +49,30 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const login = (email, password) => {
-    signInWithEmailAndPassword(auth, email, password); 
-    localStorage.setItem("userId", auth.currentUser.uid);
+  const login = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userId = userCredential.user.uid;
+
+      // Fetch the user's document from Firestore
+      const userDoc = doc(db, "users", userId);
+      const userSnapshot = await getDoc(userDoc);
+
+      if (userSnapshot.exists()) {
+        const userData = userSnapshot.data();
+        const userName = userData.userName;
+
+        // Save the userId and userName to localStorage
+        localStorage.setItem("userId", userId);
+        localStorage.setItem("userName", userName);
+      } else {
+        throw new Error("User data not found in Firestore.");
+      }
+
+      return userCredential;
+    } catch (error) {
+      throw new Error("Error logging in: " + error.message);
+    }
   };
 
   const logout = () => {

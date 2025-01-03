@@ -5,7 +5,9 @@
 @layer base {
   body {
     @apply antialiased;
+    @apply font-montserrat;
   }
+ 
 }
 
 @layer components {

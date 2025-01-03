@@ -3,9 +3,12 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { ThemeProvider } from './context/ThemeContext';
 import { AuthProvider } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
-import Login from "./components/auth/Login"
-import Register from "./components/auth/Register"
-import Dashboard from './components/Dashboard';
+import Login from './components/auth/Login';
+import Register from './components/auth/Register';
+import Overview from './pages/Overview';
+import Budget from './pages/Budget';
+import Settings from './pages/Settings';
+import Layout from './Layout';
 import { useAuth } from './context/AuthContext';
 
 const PrivateRoute = ({ children }) => {
@@ -15,9 +18,9 @@ const PrivateRoute = ({ children }) => {
     return <div>Loading...</div>;
   }
   
-  return user ? children : <Navigate to="/login" />;
+  return user ? <Layout>{children}</Layout> : <Navigate to="/login" />;
 };
-localStorage.clear("")
+
 function App() {
   return (
     <Router>
@@ -28,14 +31,30 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route
-                path="/dashboard"
+                path="/overview"
                 element={
                   <PrivateRoute>
-                    <Dashboard />
+                    <Overview />
                   </PrivateRoute>
                 }
               />
-              <Route path="/" element={<Navigate to="/dashboard" />} />
+              <Route
+                path="/budget"
+                element={
+                  <PrivateRoute>
+                    <Budget />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path="/settings"
+                element={
+                  <PrivateRoute>
+                    <Settings />
+                  </PrivateRoute>
+                }
+              />
+              <Route path="/" element={<Navigate to="/overview" />} />
             </Routes>
             <Toaster position="top-right" />
           </div>
@@ -44,5 +63,4 @@ function App() {
     </Router>
   );
 }
-
 export default App;

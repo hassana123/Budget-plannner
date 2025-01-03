@@ -19,6 +19,9 @@ export default {
           dark: '#FFC7DD',
         },
       },
+      fontFamily: {
+        montserrat: ["Montserrat", "sans-serif"],
+      },
       boxShadow: {
         'soft': '0px 2px 6px rgba(0, 0, 0, 0.05)',
         'soft-lg': '0px 4px 12px rgba(0, 0, 0, 0.08)',

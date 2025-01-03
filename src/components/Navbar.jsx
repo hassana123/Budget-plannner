@@ -11,7 +11,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           <img 
             src={isDark ? "./2-removebg.png" : "./1-removebg.png"} 
-            alt="Track.ly Logo" 
+            alt="Trackly Logo" 
             className="w-[50px]" 
           />
           <button

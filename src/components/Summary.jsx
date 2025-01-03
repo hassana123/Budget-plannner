@@ -8,7 +8,8 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const Summary = ({ income, expenses, bills, savings, debt }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-const UserName=localStorage.getItem("userName");
+  const userName = localStorage.getItem("userName");
+
   const calculateTotal = items => items.reduce((sum, item) => sum + item.amount, 0);
 
   const totals = {
@@ -19,10 +20,9 @@ const UserName=localStorage.getItem("userName");
     debt: calculateTotal(debt)
   };
   
-const incoming = totals.income + totals.savings;
-const outgoing = totals.expenses + totals.bills + totals.debt;
-const netWorth = incoming - outgoing;
-
+  const moneyIn = totals.income + totals.savings;
+  const moneyOut = totals.expenses + totals.bills + totals.debt;
+  const balance = moneyIn - moneyOut;
 
   const chartData = {
     labels: ['Income', 'Expenses', 'Bills', 'Savings', 'Debt'],
@@ -60,7 +60,9 @@ const netWorth = incoming - outgoing;
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between"
       >
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">{`${UserName}'s Summary`} </h2>
+        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+          {userName ? `${userName}'s Summary` : 'Financial Summary'}
+        </h2>
         <FiChevronDown 
           className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${
             isExpanded ? 'transform rotate-180' : ''
@@ -73,21 +75,35 @@ const netWorth = incoming - outgoing;
         ${isExpanded ? 'max-h-[1000px] opacity-100 mt-6' : 'max-h-0 opacity-0'}
       `}>
         <div className="space-y-4">
-          {Object.entries(totals).map(([key, value]) => (
-            <div key={key} className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg">
-              <div className="flex justify-between items-center">
-                <span className="capitalize text-gray-600 dark:text-gray-300">{key}</span>
-                <span className="font-semibold text-gray-900 dark:text-white">
-                  {formatNaira(value)}
-                </span>
-              </div>
+          <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
+            <div className="flex justify-between items-center">
+              <span className="text-green-600 dark:text-green-400">Total Money In</span>
+              <span className="font-semibold text-green-700 dark:text-green-300">
+                {formatNaira(moneyIn)}
+              </span>
             </div>
-          ))}
+            <div className="mt-2 text-sm text-green-600 dark:text-green-400">
+              Income: {formatNaira(totals.income)} | Savings: {formatNaira(totals.savings)}
+            </div>
+          </div>
+
+          <div className="p-4 bg-red-50 dark:bg-red-900/20 rounded-lg">
+            <div className="flex justify-between items-center">
+              <span className="text-red-600 dark:text-red-400">Total Money Out</span>
+              <span className="font-semibold text-red-700 dark:text-red-300">
+                {formatNaira(moneyOut)}
+              </span>
+            </div>
+            <div className="mt-2 text-sm text-red-600 dark:text-red-400">
+              Expenses: {formatNaira(totals.expenses)} | Bills: {formatNaira(totals.bills)} | Debt: {formatNaira(totals.debt)}
+            </div>
+          </div>
+
           <div className="p-4 bg-gradient-to-r from-primary to-primary-light dark:from-primary-dark dark:to-primary rounded-lg">
             <div className="flex justify-between items-center">
-              <span className="text-white font-medium">Net Worth</span>
+              <span className="text-white font-medium">Current Balance</span>
               <span className="text-white font-semibold">
-                {formatNaira(  netWorth)}
+                {formatNaira(balance)}
               </span>
             </div>
           </div>
@@ -99,5 +115,4 @@ const netWorth = incoming - outgoing;
     </div>
   );
 };
-
 export default Summary;

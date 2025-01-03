@@ -22,7 +22,7 @@ const Register = () => {
     try {
       await signup(userName, email, password);
       toast.success("Account created successfully!");
-      navigate("/dashboard");
+      navigate("/overview");
     } catch (error) {
       toast.error(error.message);
     }

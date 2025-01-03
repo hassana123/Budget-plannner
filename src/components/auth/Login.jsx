@@ -15,7 +15,7 @@ const Login = () => {
     try {
       await login(email, password);
       toast.success('Successfully logged in!');
-      navigate('/dashboard');
+      navigate('/overview');
     } catch (error) {
       toast.error(error.message);
     }
@@ -64,7 +64,7 @@ const Login = () => {
           <div className="mt-4 text-center">
             <p className="text-gray-600 dark:text-gray-400">
               Don't have an account?{' '}
-              <NavLink to="/register" className="text-[#FF4F9A] dark:text-[#FF4F9A] font-medium hover:underline">
+              <NavLink to="/register" className="text-[#FF4F9A]  font-medium hover:underline">
                 Sign up
               </NavLink>
             </p>
