@@ -70,7 +70,7 @@ const MonthlyOverview = ({ monthlyData }) => {
         {month} {year} Overview
       </h2>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 md:gap-4 lg:gap-6">
+      <div className="grid md:grid-cols-3 lg:grid-cols-4 md:gap-4 lg:gap-6 space-y-3 md:space-y-0">
         <div
           className="p-2 rounded-lg bg-green-50 dark:bg-green-900/20 group relative"
           title="Total of your income"
