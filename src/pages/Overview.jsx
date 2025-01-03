@@ -11,7 +11,7 @@ const Overview = () => {
   }
 
   return (
-    <div className="container mx-auto mx-2 my-5">
+    <div className="container mx-auto my-5">
       <MonthlyOverview monthlyData={monthlyData} />
     </div>
   );
