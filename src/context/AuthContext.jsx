@@ -39,7 +39,6 @@ export const AuthProvider = ({ children }) => {
         userName,
         email,
         createdAt: new Date().toISOString(),
-        budgetData: [], // Initial placeholder for user's budget data
       });
       localStorage.setItem("userId", userId);
       localStorage.setItem("userName", userName);
