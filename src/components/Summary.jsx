@@ -61,8 +61,8 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between"
       >
-        <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
-          {userName ? `${userName}'s Summary` : 'Financial Shenanigans'}
+        <h2 className="text-sm text-gray-800 dark:text-white">
+          Hey there   {userName ? `${userName} 👋` : '👋'} <br/> <small>Here's your January Summary</small>
         </h2>
         <FiChevronDown 
           className={`w-5 h-5 text-gray-500 transition-transform duration-300 ${

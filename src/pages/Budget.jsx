@@ -37,7 +37,7 @@ const Budget = () => {
         <>
           <div className="flex justify-between items-center mb-8">
             <h1 className="text-2xl font-bold text-gray-800 dark:text-white">
-              {selectedMonth} Budget
+              {selectedMonth}'s Cash Chronicles
             </h1>
             <button
               onClick={() => setShowMonthPicker(true)}
