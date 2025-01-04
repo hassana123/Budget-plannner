@@ -19,7 +19,7 @@ const Settings = () => {
 
   return (
     <div className="container mx-auto px-6 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-8">Settings</h1>
+      <h1 className="text-xl font-bold text-gray-800 dark:text-white mb-8">Settings</h1>
       
       <div className="bg-white dark:bg-gray-800 rounded-xl shadow-soft p-6">
         <div className="space-y-6">
