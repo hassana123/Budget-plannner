@@ -67,7 +67,7 @@ const MonthlyOverview = ({ monthlyData }) => {
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-soft py-5 px-2 mb-8 lg:mx-5">
-      <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-6 mx-6">
+      <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-6 mx-6">
         {month} {year} Overview
       </h2>
 
