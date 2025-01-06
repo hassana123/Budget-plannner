@@ -24,8 +24,11 @@ const MonthlyOverview = ({ monthlyData }) => {
 
   const getStatusMessage = () => {
     const message = (() => {
-      if (totalIncome === 0 && totalOutgoing === 0) {
-        return `No financial data recorded yet, but don't worry, we're all broke sometimes. \n #BrokeButHappy #ChillNoMoney #NaijaVibes #DrySeason`;
+      if (totalIncome === 0 && totalOutgoing === 0 && totalSavings === 0) {
+        return `No financial data recorded yet, but don't worry, we're all broke sometimes. \n #BrokeButHappy #ChillNoMoney #ifibrokenamybusiness #Sapa`;
+      }
+      if (totalIncome === 0 && totalOutgoing === 0 && totalSavings !== 0) {
+        return `You No get Money You dey Save. \n #smilesinSapa #ChillNoMoney #SavingsDey #NoIncome`;
       }
   
       if (totalOutgoing > totalIncome && totalSavings >= totalOutgoing) {
