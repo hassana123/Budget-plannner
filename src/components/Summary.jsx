@@ -56,7 +56,7 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
   };
 
   return (
-    <div className="card p-5 mx-2">
+    <div className="card p-2 mx-2">
       <button 
         onClick={() => setIsExpanded(!isExpanded)}
         className="w-full flex items-center justify-between"
@@ -70,12 +70,31 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
           }`}
         />
       </button>
-      
+      <div className="p-3 text-[12px] bg-[#2f4f4f]  dark:from-primary-dark dark:to-primary rounded-lg">
+            <div className="flex flex-col space-y-2">
+              <div className="flex justify-between items-center">
+                <span className="text-white font-medium">January Flex Funds: <br/>(Protected savings 🔐 )</span>
+               <div className='w-10 h-[2px] bg-white'></div>
+                <span className="text-white font-semibold">
+
+                  {formatNaira(balanceWithSavings)}<br/> <small>(Savings Hero Mode)</small>
+                </span>
+              </div>
+              <div className="flex justify-between items-center">
+                <span className="text-white font-medium">January Flex Funds<br/> (savings at risk 🔓)</span>
+               <div className='w-10 h-[2px] bg-white'></div>
+
+                <span className="text-white font-semibold">
+                  {formatNaira(balanceWithoutSavings)} <br/> <small>(YOLO Edition)</small>
+                </span>
+              </div>
+            </div>
+          </div>
       <div className={`
         grid grid-cols-1 md:grid-cols-2 gap-8 overflow-hidden transition-all duration-300
-        ${isExpanded ? 'max-h-[1000px] opacity-100 mt-6' : 'max-h-0 opacity-0'}
+        ${isExpanded ? 'max-h-[1000px] opacity-100 mt-3' : 'max-h-0 opacity-0'}
       `}>
-        <div className="space-y-4">
+        <div className="space-y-2">
           <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
             <div className="flex justify-between items-center">
               <span className="text-green-600 dark:text-green-400">Total Money In <br/> <small>(Earnings in January)</small></span>
@@ -103,27 +122,6 @@ const Summary = ({ income, expenses, bills, savings, debt }) => {
             </div>
             <div className="mt-2 text-sm text-red-600 dark:text-red-400">
               Custom Expenses: {formatNaira(totals.expenses)} | Bills: {formatNaira(totals.bills)} | Debt: {formatNaira(totals.debt)}
-            </div>
-          </div>
-
-          <div className="p-3 text-[12px] bg-black  dark:from-primary-dark dark:to-primary rounded-lg">
-            <div className="flex flex-col space-y-2">
-              <div className="flex justify-between items-center">
-                <span className="text-white font-medium">January Flex Funds: <br/>(Protected savings 🔐 )</span>
-               <div className='w-10 h-[2px] bg-white'></div>
-                <span className="text-white font-semibold">
-
-                  {formatNaira(balanceWithSavings)}<br/> <small>(Savings Hero Mode)</small>
-                </span>
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-white font-medium">January Flex Funds<br/> (savings at risk 🔓)</span>
-               <div className='w-10 h-[2px] bg-white'></div>
-
-                <span className="text-white font-semibold">
-                  {formatNaira(balanceWithoutSavings)} <br/> <small>(YOLO Edition)</small>
-                </span>
-              </div>
             </div>
           </div>
         </div>

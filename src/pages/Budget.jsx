@@ -19,7 +19,7 @@ const Budget = () => {
   }
 
   return (
-    <div className="container mx-auto px-2 lg:px-5 my-5 ">
+    <div className="container mx-auto px-2 lg:px-3 my-2 ">
       {showMonthPicker ? (
         <div className="fixed inset-0 bg-gray-900/50 backdrop-blur-sm flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl max-w-lg w-full mx-4">
@@ -35,7 +35,7 @@ const Budget = () => {
         </div>
       ) : (
         <>
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex justify-between items-center mb-3">
             <h1 className="text-xl font-bold text-gray-800 dark:text-white">
               {selectedMonth}'s Cash Chronicles
             </h1>
