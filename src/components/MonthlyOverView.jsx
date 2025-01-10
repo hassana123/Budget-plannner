@@ -19,8 +19,33 @@ const MonthlyOverview = ({ monthlyData }) => {
   const totalOutgoing = totalExpenses + totalBills + totalDebt;
   const isInDangerZone = totalOutgoing >= totalIncome;
   const remainingWithoutSavings = totalIncome - totalOutgoing - totalSavings;
-  const remainingWithSavings = totalIncome  - totalOutgoing;
+  const remainingWithSavings = totalIncome - totalOutgoing;
   const [isMessageVisible, setIsMessageVisible] = useState(false);
+
+  const getTooltipMessage = () => {
+    if (totalIncome === 0 && totalOutgoing === 0 && totalSavings === 0) {
+      return "No financial data recorded yet, but don't worry, we're all broke sometimes.";
+    }
+    if (totalIncome === 0 && totalOutgoing === 0 && totalSavings !== 0) {
+      return "You No get Money You dey Save.";
+    }
+    if (totalOutgoing > totalIncome && totalSavings >= totalOutgoing) {
+      return "Your savings are covering your expenses, but your income is still lacking.";
+    }
+    if (totalOutgoing >= totalIncome && totalSavings === 0) {
+      return "Your expenses are eating up your income and you have no savings.";
+    }
+    if (totalIncome < totalExpenses && totalSavings === 0) {
+      return "Your income can't cover your expenses and you have no savings.";
+    }
+    if (totalSavings > totalIncome && totalIncome > totalExpenses) {
+      return "Your savings are greater than your income, and you're still breezing through your expenses.";
+    }
+    if (totalOutgoing >= totalIncome) {
+      return "Warning: You're spending more than you're earning!";
+    }
+    return "Your finances are looking great! Keep the good vibes going.";
+  };
 
   const getStatusMessage = () => {
     const message = (() => {
@@ -30,35 +55,28 @@ const MonthlyOverview = ({ monthlyData }) => {
       if (totalIncome === 0 && totalOutgoing === 0 && totalSavings !== 0) {
         return `You No get Money You dey Save. \n #smilesinSapa #ChillNoMoney #SavingsDey #NoIncome`;
       }
-  
       if (totalOutgoing > totalIncome && totalSavings >= totalOutgoing) {
         return `Your savings are covering your expenses, but your income is still lacking. \n #SavingsOnTop #PennySavedIsAPennyEarned #NaijaHustle #SavingsLife`;
       }
-  
       if (totalOutgoing >= totalIncome && totalSavings === 0) {
         return "Your expenses are eating up your income and you have no savings. \n #SurvivalMode #ChasingBalance #SapaChronicles #HustleForLife";
       }
-  
       if (totalIncome < totalExpenses && totalSavings === 0) {
-        return `Your income can't cover your expenses and you have no savings. \n \n #FightingToSurvive #BalanceWeDeyFind #DebtLife #StrugglingHard`;
-      }1
-  
+        return `Your income can't cover your expenses and you have no savings. \n #FightingToSurvive #BalanceWeDeyFind #DebtLife #StrugglingHard`;
+      }
       if (totalSavings > totalIncome && totalIncome > totalExpenses) {
         return `Your savings are greater than your income, and you're still breezing through your expenses. \n #FinancialGuru #MoneyMatters #HustlerVibes #JapaPlans`;
       }
-  
       if (totalOutgoing >= totalIncome) {
         return `Warning: You're spending more than you're earning! \n #SapaOnTheHorizon #BudgetWahala #BrokeLife #SavingGraceNeeded`;
       }
-  
       return "Your finances are looking great! Keep the good vibes going. \n #GoodVibesOnly #OnTheUpAndUp #MoneyGoals #FlexMode";
     })();
-  
-    // Split message into normal text and hashtags
+
     return message.split(/(\s#\w+)/).map((part, index) => {
       if (part.startsWith(" #")) {
         return (
-          <span key={index} className="text-[11px] text white ">
+          <span key={index} className="text-[11px] text-white">
             {part}
           </span>
         );
@@ -66,7 +84,6 @@ const MonthlyOverview = ({ monthlyData }) => {
       return <span key={index}>{part}</span>;
     });
   };
-  
 
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-soft py-5 px-2 mb-8 lg:mx-5">
@@ -86,13 +103,18 @@ const MonthlyOverview = ({ monthlyData }) => {
           <p className="text-2xl font-bold text-green-700 dark:text-green-300 mt-2">
             {formatNaira(totalIncome)}
           </p>
-          <div className="opacity-0 group-hover:opacity-100 transition-opacity text-green-600 dark:text-green-400 duration-200 mt-2 text-sm ">
-          {monthlyData?.income? <> {monthlyData?.income?.map((item) => (
-                <div key={item.id}>
-                  {item.description} - {formatNaira(item.amount)}
-                </div>
-              ))}</> : <small>Zero</small>}
-         
+          <div className="opacity-0 group-hover:opacity-100 transition-opacity text-green-600 dark:text-green-400 duration-200 mt-2 text-sm">
+            {monthlyData?.income ? (
+              <>
+                {monthlyData?.income?.map((item) => (
+                  <div key={item.id}>
+                    {item.description} - {formatNaira(item.amount)}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <small>Zero</small>
+            )}
           </div>
         </div>
 
@@ -108,12 +130,17 @@ const MonthlyOverview = ({ monthlyData }) => {
             {formatNaira(totalSavings)}
           </p>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 mt-2 text-sm text-blue-600 dark:text-blue-400">
-          {monthlyData?.savings? <>  {monthlyData?.savings?.map((item) => (
-                <div key={item.id}>
-                  {item.description} - {formatNaira(item.amount)}
-                </div>
-              ))}</>: <small>Zero</small>}
-        
+            {monthlyData?.savings ? (
+              <>
+                {monthlyData?.savings?.map((item) => (
+                  <div key={item.id}>
+                    {item.description} - {formatNaira(item.amount)}
+                  </div>
+                ))}
+              </>
+            ) : (
+              <small>Zero</small>
+            )}
           </div>
         </div>
 
@@ -129,8 +156,8 @@ const MonthlyOverview = ({ monthlyData }) => {
             {formatNaira(totalOutgoing)}
           </p>
           <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 mt-2 text-sm text-red-600 dark:text-red-400">
-            Expenses: {formatNaira(totalExpenses)} | Bills:{" "}
-            {formatNaira(totalBills)} | Debt: {formatNaira(totalDebt)}
+            Expenses: {formatNaira(totalExpenses)} | Bills: {formatNaira(totalBills)} |
+            Debt: {formatNaira(totalDebt)}
           </div>
         </div>
 
@@ -140,7 +167,7 @@ const MonthlyOverview = ({ monthlyData }) => {
               ? "bg-red-50 dark:bg-red-900/20"
               : "bg-emerald-50 dark:bg-emerald-900/20"
           }`}
-          title={getStatusMessage()}
+          title={getTooltipMessage()}
           onMouseEnter={() => setIsMessageVisible(true)}
           onMouseLeave={() => setIsMessageVisible(false)}
         >
@@ -171,17 +198,14 @@ const MonthlyOverview = ({ monthlyData }) => {
                 ? "text-red-700 dark:text-red-300"
                 : "text-emerald-700 dark:text-emerald-300"
             }`}
-          >
-            </p>
-            <p className="text-[16px] mt-2 text-green-900"> 
-            Balance: (Securing Your Savings 🔐) 
-            {formatNaira(remainingWithoutSavings)}
+          ></p>
+          <p className="text-[16px] mt-2 text-green-900">
+            Balance: (Securing Your Savings 🔐) {formatNaira(remainingWithoutSavings)}
           </p>
           <p className="text-[16px] mt-2 text-red-600">
-            Balance: (Unlocking Your Savings 🔓) 
-            {formatNaira(remainingWithSavings)}
+            Balance: (Unlocking Your Savings 🔓) {formatNaira(remainingWithSavings)}
           </p>
-         
+
           {isMessageVisible && (
             <div className="absolute w-full top-full left-1/2 transform -translate-x-1/2 mt-2 bg-pink-800 text-white text-[15px] capitalize p-2 rounded-lg shadow-lg opacity-90">
               {getStatusMessage()}
