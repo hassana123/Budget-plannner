@@ -123,7 +123,7 @@ const BudgetCard = ({ title, items, onAddItem, onDeleteItem, color }) => {
           ))}
         </div>
 
-        {items.length > 3 && (
+        {items.length >= 2 && (
           <button
             onClick={() => setShowAllItems(!showAllItems)}
             className="mt-4 w-full flex items-center justify-center gap-2 p-2 text-sm text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700/50 rounded-lg transition-colors"
