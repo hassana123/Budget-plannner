@@ -7,11 +7,13 @@ import {
   setDoc 
 } from 'firebase/firestore';
 import { db } from '../../FirebaseConfig';
-import { getCurrentMonth, getMonthNumber } from '../utils/dateHelpers';
+import { getMonthNumber } from '../utils/dateHelpers';
 
-export const addBudgetItem = async (userId, category, item) => {
+/**
+ * Add a budget item for any given month and year.
+ */
+export const addBudgetItem = async (userId, category, item, month, year) => {
   try {
-    const { month, year } = getCurrentMonth();
     const monthKey = `${year}-${getMonthNumber(month)}`;
     
     const userDocRef = doc(db, 'users', userId);
@@ -39,29 +41,41 @@ export const addBudgetItem = async (userId, category, item) => {
   }
 };
 
-export const getBudgetItems = async (userId, month, year) => {
+/**
+ * Retrieve budget items for a specific month and year.
+ * If no budget items exist for the selected month, it returns an empty object.
+ */
+export const getBudgetItems = async (userId, monthKey) => {
   try {
-    const monthKey = `${year}-${getMonthNumber(month)}`;
-    const userDocRef = doc(db, 'users', userId);
+    const userDocRef = doc(db, "users", userId);
     const userDoc = await getDoc(userDocRef);
 
     if (!userDoc.exists()) {
-      await setDoc(userDocRef, {
-        monthlyBudgets: {}
-      });
+      console.warn("User document does not exist.");
       return {};
     }
 
     const monthlyBudgets = userDoc.data().monthlyBudgets || {};
-    return monthlyBudgets[monthKey] || {};
+    console.log("Fetched monthlyBudgets:", monthlyBudgets);
+
+    if (monthlyBudgets[monthKey]) {
+      console.log("Data found for:", monthKey, monthlyBudgets[monthKey]);
+      return monthlyBudgets[monthKey];
+    } else {
+      console.warn(`No data found for monthKey: ${monthKey}`);
+      return {}; // Return empty object if no data found
+    }
   } catch (error) {
-    throw new Error('Error fetching budget items: ' + error.message);
+    throw new Error("Error fetching budget items: " + error.message);
   }
 };
 
-export const deleteBudgetItem = async (userId, category, itemId) => {
+
+/**
+ * Delete a budget item from a specific month and year.
+ */
+export const deleteBudgetItem = async (userId, category, itemId, month, year) => {
   try {
-    const { month, year } = getCurrentMonth();
     const monthKey = `${year}-${getMonthNumber(month)}`;
     const userDocRef = doc(db, 'users', userId);
     const userDoc = await getDoc(userDocRef);
@@ -71,10 +85,9 @@ export const deleteBudgetItem = async (userId, category, itemId) => {
     }
 
     const monthlyBudgets = userDoc.data().monthlyBudgets || {};
-    const currentMonthBudget = monthlyBudgets[monthKey] || {};
-    const categoryItems = currentMonthBudget[category] || [];
-    const itemToDelete = categoryItems.find(item => item.id === itemId);
+    const categoryItems = (monthlyBudgets[monthKey] && monthlyBudgets[monthKey][category]) || [];
 
+    const itemToDelete = categoryItems.find(item => item.id === itemId);
     if (!itemToDelete) {
       throw new Error('Item not found');
     }

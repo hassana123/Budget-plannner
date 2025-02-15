@@ -59,6 +59,8 @@ const Budget = () => {
             initialMonthlyData={monthlyData}
             isCurrentMonth={selectedMonth === getCurrentMonth().month}
             setMonthlyData={setMonthlyData}
+            month={selectedMonth}
+            year={2025}
           />
         </>
       )}

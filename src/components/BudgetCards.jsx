@@ -4,18 +4,18 @@ import { useAuth } from '../context/AuthContext';
 import { addBudgetItem, deleteBudgetItem } from '../services/budgetService';
 import toast from 'react-hot-toast';
 
-const BudgetCards = ({ initialMonthlyData, isCurrentMonth, setMonthlyData }) => {
+const BudgetCards = ({ initialMonthlyData, isCurrentMonth, setMonthlyData, month, year }) => {
     const { user } = useAuth();
    // const [monthlyData, setMonthlyData] = useState(initialMonthlyData);
   
     const handleAddItem = async (category, item) => {
       try {
-        if (!isCurrentMonth) {
-          toast.error('You can only add items for the current month');
-          return;
-        }
+        // if (!isCurrentMonth) {
+        //   toast.error('You can only add items for the current month');
+        //   return;
+        // }
   
-        await addBudgetItem(user.uid, category, item);
+        await addBudgetItem(user.uid, category, item,month, year);
         setMonthlyData((prevData) => ({
           ...prevData,
           [category]: [...(prevData[category] || []), item],
@@ -28,12 +28,12 @@ const BudgetCards = ({ initialMonthlyData, isCurrentMonth, setMonthlyData }) => 
   
     const handleDeleteItem = async (category, itemId) => { // Use itemId for deletion
       try {
-        if (!isCurrentMonth) {
-          toast.error('You can only delete items for the current month');
-          return;
-        }
+        // if (!isCurrentMonth) {
+        //   toast.error('You can only delete items for the current month');
+        //   return;
+        // }
   
-        await deleteBudgetItem(user.uid, category, itemId); // Delete by itemId
+        await deleteBudgetItem(user.uid, category, itemId, month, year); // Delete by itemId
         setMonthlyData((prevData) => ({
           ...prevData,
           [category]: (prevData[category] || []).filter((item) => item.id !== itemId), // Filter by id

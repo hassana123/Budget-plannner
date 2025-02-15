@@ -3,8 +3,8 @@ import { formatNaira } from "../utils/currency";
 import { getCurrentMonth } from "../utils/dateHelpers";
 import { FiTrendingUp, FiTrendingDown, FiAlertTriangle, FiSave } from "react-icons/fi";
 
-const MonthlyOverview = ({ monthlyData }) => {
-  const { month, year } = getCurrentMonth();
+const MonthlyOverview = ({ monthlyData ,monthKey }) => {
+ // const { month, year } = getCurrentMonth();
   const totalIncome =
     monthlyData?.income?.reduce((sum, item) => sum + item.amount, 0) || 0;
   const totalExpenses =
@@ -84,11 +84,20 @@ const MonthlyOverview = ({ monthlyData }) => {
       return <span key={index}>{part}</span>;
     });
   };
-
+  const convertMonthKeyToReadable = (monthKey) => {
+    if (!monthKey) return "";
+    const [year, month] = monthKey.split("-");
+    const monthNames = [
+      "January", "February", "March", "April", "May", "June",
+      "July", "August", "September", "October", "November", "December"
+    ];
+    return `${monthNames[parseInt(month, 10) - 1]} ${year}`;
+  };
+  const readableMonth = convertMonthKeyToReadable(monthKey);
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-soft py-5 px-2 mb-8 lg:mx-5">
       <h2 className="text-xl font-bold text-gray-800 dark:text-white mb-6 mx-6">
-        {month} {year} Overview
+      {readableMonth} Overview
       </h2>
 
       <div className="grid md:grid-cols-3 lg:grid-cols-4 md:gap-4 lg:gap-6 space-y-3 md:space-y-0">

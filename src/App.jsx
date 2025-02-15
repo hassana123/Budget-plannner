@@ -5,8 +5,9 @@ import { AuthProvider } from './context/AuthContext';
 import { Toaster } from 'react-hot-toast';
 import Login from './components/auth/Login';
 import Register from './components/auth/Register';
-import Overview from './pages/Overview';
+import MonthlyOverviewPage from './pages/MonthlyOverview';
 import Budget from './pages/Budget';
+import YearlyOverview from './pages/YearlyOverview';
 import Settings from './pages/Settings';
 import Layout from './Layout';
 import { useAuth } from './context/AuthContext';
@@ -34,7 +35,15 @@ function App() {
                 path="/overview"
                 element={
                   <PrivateRoute>
-                    <Overview />
+                    <YearlyOverview />
+                  </PrivateRoute>
+                }
+              />
+              <Route
+                path={`overview/:monthKey`}
+                element={
+                  <PrivateRoute>
+                    <MonthlyOverviewPage />
                   </PrivateRoute>
                 }
               />
