@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../../FirebaseConfig';
 import { useAuth } from '../context/AuthContext';
-import { getBudgetItems } from '../services/budgetService';
+import { getMonthNumber } from '../utils/dateHelpers';
 import { getCurrentMonth } from '../utils/dateHelpers';
 import toast from 'react-hot-toast';
 
@@ -11,20 +13,34 @@ export const useMonthlyData = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const loadBudgetItems = async () => {
+    const fetchMonthlyData = async () => {
+      if (!user) return;
+
       try {
         setLoading(true);
         const { year } = getCurrentMonth();
-        const items = await getBudgetItems(user.uid, selectedMonth, year);
-        setMonthlyData(items);
+        const monthKey = `${year}-${getMonthNumber(selectedMonth)}`;
+        
+        const userDocRef = doc(db, 'users', user.uid);
+        const userDoc = await getDoc(userDocRef);
+
+        if (!userDoc.exists()) {
+          console.warn('User document does not exist.');
+          setMonthlyData({});
+          return;
+        }
+
+        const monthlyBudgets = userDoc.data().monthlyBudgets || {};
+        setMonthlyData(monthlyBudgets[monthKey] || {});
       } catch (error) {
+        console.error('Error fetching budget items:', error);
         toast.error('Error loading budget items');
       } finally {
         setLoading(false);
       }
     };
 
-    loadBudgetItems();
+    fetchMonthlyData();
   }, [user, selectedMonth]);
 
   return {
@@ -32,6 +48,6 @@ export const useMonthlyData = () => {
     setMonthlyData,
     loading,
     selectedMonth,
-    setSelectedMonth
+    setSelectedMonth,
   };
 };
