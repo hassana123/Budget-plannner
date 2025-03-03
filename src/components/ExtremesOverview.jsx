@@ -14,9 +14,10 @@ const ExtremesOverview = ({ allMonthsData }) => {
     };
 
     allMonthsData.forEach(({ monthKey, data }) => {
-      const income = data.income.reduce((sum, item) => sum + item.amount, 0);
-      const expenses = data.expenses.reduce((sum, item) => sum + item.amount, 0);
-      const savings = data.savings.reduce((sum, item) => sum + item.amount, 0);
+      // Safe checks for income, expenses, and savings arrays
+      const income = Array.isArray(data.income) ? data.income.reduce((sum, item) => sum + item.amount, 0) : 0;
+      const expenses = Array.isArray(data.expenses) ? data.expenses.reduce((sum, item) => sum + item.amount, 0) : 0;
+      const savings = Array.isArray(data.savings) ? data.savings.reduce((sum, item) => sum + item.amount, 0) : 0;
 
       if (income > extremes.highestIncome.amount)
         extremes.highestIncome = { month: monthKey, amount: income };
@@ -42,7 +43,7 @@ const ExtremesOverview = ({ allMonthsData }) => {
   return (
     <div className="bg-pink-100 dark:bg-pink-900 rounded-2xl shadow-lg p-6">
       <h3 className="text-2xl font-bold text-pink-700 dark:text-pink-300 mb-6 text-center">
-       Extremes Overview 
+        Extremes Overview
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

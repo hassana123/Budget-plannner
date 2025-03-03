@@ -14,9 +14,18 @@ ChartJS.register(
 
 const ComparativeChart = ({ allMonthsData }) => {
   const labels = allMonthsData.map(({ monthKey }) => monthKey);
-  const incomeData = allMonthsData.map(({ data }) => data.income.reduce((sum, item) => sum + item.amount, 0));
-  const expensesData = allMonthsData.map(({ data }) => data.expenses.reduce((sum, item) => sum + item.amount, 0));
-  const savingsData = allMonthsData.map(({ data }) => data.savings.reduce((sum, item) => sum + item.amount, 0));
+
+  const incomeData = allMonthsData.map(({ data }) => 
+    data?.income?.reduce((sum, item) => sum + item.amount, 0) || 0
+  );
+
+  const expensesData = allMonthsData.map(({ data }) => 
+    data?.expenses?.reduce((sum, item) => sum + item.amount, 0) || 0
+  );
+
+  const savingsData = allMonthsData.map(({ data }) => 
+    data?.savings?.reduce((sum, item) => sum + item.amount, 0) || 0
+  );
 
   const chartData = {
     labels: labels,
