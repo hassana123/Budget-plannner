@@ -18,13 +18,22 @@ const YearlyOverview = () => {
         setLoading(true);
         const userDocRef = doc(db, 'users', user.uid);
         const userDoc = await getDoc(userDocRef);
-
+  
         if (userDoc.exists()) {
           const monthlyBudgets = userDoc.data().monthlyBudgets || {};
-          const months = Object.entries(monthlyBudgets).map(([monthKey, data]) => ({
-            monthKey,
-            data,
-          }));
+          const months = Object.entries(monthlyBudgets)
+            .map(([monthKey, data]) => ({
+              monthKey,
+              data,
+            }))
+            .sort((a, b) => {
+              const [yearA, monthA] = a.monthKey.split('-').map(Number);
+              const [yearB, monthB] = b.monthKey.split('-').map(Number);
+              const dateA = new Date(yearA, monthA - 1);
+              const dateB = new Date(yearB, monthB - 1);
+              return dateB - dateA;
+            });
+  
           setAllMonthsData(months);
         } else {
           console.error("User data not found.");
@@ -35,7 +44,7 @@ const YearlyOverview = () => {
         setLoading(false);
       }
     };
-
+  
     if (user) {
       fetchAllMonthsData();
     }
@@ -55,11 +64,11 @@ const YearlyOverview = () => {
   };
   //const readableMonth = convertMonthKeyToReadable(monthKey);
   return (
-    <div className="px-4 py-8">
-      <h1 className="text-2xl font-bold text-gray-800 dark:text-white mb-6">Yearly Overview</h1>
+    <div className="px-4 py-5">
+      <h1 className="text-2xl font-bold text-pink-800 dark:text-white mb-3">Yearly Overview</h1>
 
       {/* Monthly Data Summary */}
-      <div className="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+      <div className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
         {allMonthsData.map(({ monthKey, data }) => (
           <Link key={monthKey} to={`/overview/${monthKey}`} className="block hover:scale-105 transition-transform">
             <MonthlySummary monthKey={monthKey} data={data} />

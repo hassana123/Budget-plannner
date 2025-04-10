@@ -10,10 +10,18 @@ const MonthlySummary = ({ monthKey, data }) => {
   const savingsTotal = calculateTotal(data.savings || []);
   const debtTotal = calculateTotal(data.debt || []);
 
+  const formatMonthYear = (key) => {
+    const [year, month] = key.split('-').map(Number);
+    const date = new Date(year, month - 1);
+    return date.toLocaleString('default', { month: 'long', year: 'numeric' });
+  };
+
   return (
     <div className="bg-white dark:bg-gray-800 rounded-xl shadow-soft p-2">
-      <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">{monthKey}</h3>
-      <div className="grid grid-cols-1 md:grid-cols-2  gap-4">
+      <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-4">
+        {formatMonthYear(monthKey)}
+      </h3>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div className="p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
           <div className="flex items-center justify-between">
             <span className="text-green-600 dark:text-green-400">Income</span>
