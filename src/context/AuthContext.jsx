@@ -32,6 +32,8 @@ export const AuthProvider = ({ children }) => {
         password
       );
       const userId = userCredential.user.uid;
+      console.log(userCredential);
+      
 
       // Create a Firestore document for the user
       const userDoc = doc(db, "users", userId);
@@ -44,6 +46,8 @@ export const AuthProvider = ({ children }) => {
       localStorage.setItem("userName", userName);
       return userCredential;
     } catch (error) {
+      console.log(error);
+      
       throw new Error("Error signing up: " + error.message);
     }
   };
@@ -65,11 +69,15 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("userId", userId);
         localStorage.setItem("userName", userName);
       } else {
+        console.log("error", userSnapshot);
+        
         throw new Error("User data not found in Firestore.");
       }
 
       return userCredential;
     } catch (error) {
+      console.log(error);
+      
       throw new Error("Error logging in: " + error.message);
     }
   };
